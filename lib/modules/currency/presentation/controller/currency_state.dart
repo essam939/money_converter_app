@@ -1,6 +1,15 @@
 part of 'currency_bloc.dart';
 
-@immutable
-abstract class CurrencyState {}
-
-class CurrencyInitial extends CurrencyState {}
+class CurrencyState extends Equatable {
+  final RequestState getAmountState;
+  const CurrencyState({this.getAmountState = RequestState.loading});
+  @override
+  List<Object?> get props => [getAmountState];
+  CurrencyState copyWith({
+    RequestState? getAmountState,
+  }) {
+    return CurrencyState(
+      getAmountState: getAmountState ?? this.getAmountState,
+    );
+  }
+}

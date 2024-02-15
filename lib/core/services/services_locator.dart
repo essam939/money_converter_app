@@ -1,23 +1,22 @@
+import 'package:currency/modules/currency/data/datasource/converter_remote_data_source.dart';
+import 'package:currency/modules/currency/data/repository/converter_repository.dart';
+import 'package:currency/modules/currency/domain/repository/base_converter_repository.dart';
+import 'package:currency/modules/currency/domain/usecase/conver_usecase.dart';
+import 'package:currency/modules/currency/presentation/controller/currency_bloc.dart';
 import 'package:get_it/get_it.dart';
 
 final sl = GetIt.instance;
 
 class ServicesLocator {
   void init() {
-    // // bloc
-    // // to refactor bloc
-    // sl.registerFactory(() => MoviesBloc(sl(),sl(),sl()));
-    // sl.registerFactory(() => MovieDetailsBloc(sl(),sl()));
-    // // use cases
-    // sl.registerLazySingleton(() => GetNowPlayingMoviesUseCase(sl()));
-    // sl.registerLazySingleton(() => GetPupulareMoviesUseCase(sl()));
-    // sl.registerLazySingleton(() => GetTopRatedMoviesUseCase(sl()));
-    // sl.registerLazySingleton(() => GetMovieDetailsUseCase(sl()));
-    // sl.registerLazySingleton(() => GetRecommendationUsecase(sl()));
-    // // Repository
-    // sl.registerLazySingleton<BaseMovieRepository>(() => MoviesReository(sl()));
-    // // data source
-    // sl.registerLazySingleton<BaseMovieRemoteDataSource>(
-    //     () => MovieRemoteDataSource());
+     // bloc
+     sl.registerFactory(() => CurrencyBloc(sl()));
+     // use cases
+     sl.registerLazySingleton(() => ConvertUseCase(sl()));
+     // Repository
+     sl.registerLazySingleton<BaseConverterRepository>(() => ConverterRepository(sl()));
+     // data source
+     sl.registerLazySingleton<BaseConverterRemoteDataSource>(
+         () => ConverterRemoteDataSource());
   }
 }
