@@ -1,3 +1,5 @@
+import 'package:currency/core/services/services_locator.dart';
+import 'package:currency/modules/currency/presentation/controller/currency_bloc.dart';
 import 'package:currency/modules/currency/presentation/screens/history_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -12,7 +14,10 @@ class _HomeScreenState extends State<HomeScreen> {
   TextEditingController amountController = TextEditingController();
 
    GlobalKey<FormState> formKey = GlobalKey<FormState>();
-
+@override
+  void initState() {
+    super.initState();
+  }
    @override
   Widget build(BuildContext context) {
      ButtonStyle outLineButtonStyle = OutlinedButton.styleFrom(
@@ -135,6 +140,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: OutlinedButton(
                       style: outLineButtonStyle,
                       onPressed: () async {
+                        sl<CurrencyBloc>().add(GetAmountEvent(from: 'AED', to: 'USD', amount: '1'));
+
                         if (formKey.currentState!.validate()) {
                           formKey.currentState!.save();
                           //controller.isConvert.value = true;

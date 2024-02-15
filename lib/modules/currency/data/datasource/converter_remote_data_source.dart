@@ -12,12 +12,10 @@ abstract class BaseConverterRemoteDataSource {
 class ConverterRemoteDataSource extends BaseConverterRemoteDataSource {
   @override
   Future<Currency> getAmount(ConvertParameters parameters) async {
-    final response = await Dio().get(ApiConstance.baseUrl, queryParameters: {
-      "from": parameters.from,
-      "to": parameters.to,
-      "amount": parameters.amount,
-      "access_key": ApiConstance.apiKey
-    });
+    print("data send ${parameters.from} ${parameters.to} ${parameters.amount}");
+    final response = await Dio().get(
+        "https://v6.exchangerate-api.com/v6/${ApiConstance.apiKey}${ApiConstance.compare}${parameters.from}/${parameters.to}/${parameters.amount}");
+    print("data ${response.data}");
     if (response.statusCode == 200) {
       return Currency.fromJson(data: response.data);
     } else {

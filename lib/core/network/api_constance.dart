@@ -1,4 +1,5 @@
 class ApiConstance {
-  static const String baseUrl = "https://api.exchangerate.host/convert";
-  static const apiKey = "9uPhto5sgd4bWHeO5DFE2WkFXXCsbdcH";
+  static const String baseUrl = "https://v6.exchangerate-api.com/v6/";
+  static const String compare = "/pair/";
+  static const apiKey = "f02acdd325c046e6557111b0";
 }

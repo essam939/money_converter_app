@@ -15,9 +15,9 @@ class ConvertUseCase extends BaseUseCase<Currency,ConvertParameters>{
 
 }
 class ConvertParameters extends Equatable {
-  final int from;
-  final int to;
-  final int amount;
+  final String from;
+  final String to;
+  final double amount;
 
   const ConvertParameters({required this.from,required this.to,required this.amount});
 

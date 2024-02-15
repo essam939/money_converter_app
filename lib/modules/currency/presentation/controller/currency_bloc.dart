@@ -18,9 +18,9 @@ class CurrencyBloc extends Bloc<CurrencyEvent, CurrencyState> {
   FutureOr<void> _geConvert(
       GetAmountEvent event, Emitter<CurrencyState> emit) async {
     final result = await convertUseCase(ConvertParameters(
-        from: int.parse(event.from),
-        to: int.parse(event.to),
-        amount: int.parse(event.amount)));
+        from: event.from,
+        to: event.to,
+        amount: double.parse(event.amount)));
     result.fold((l) => emit(state.copyWith(getAmountState: RequestState.error)),
         (r) => emit(state.copyWith(getAmountState: RequestState.loaded)));
   }
