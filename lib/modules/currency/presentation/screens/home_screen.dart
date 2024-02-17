@@ -6,42 +6,26 @@ import 'package:currency/modules/currency/presentation/screens/history_screen.da
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-List<CurrencyData> listCurrency = <CurrencyData>[
-  CurrencyData(name: "USD", flag: "https://flagcdn.com/16x12/us.png"),
-  CurrencyData(name: "AED", flag: "https://flagcdn.com/16x12/ua.png"),
-  CurrencyData(name: "EGP", flag: "https://flagcdn.com/16x12/eg.png"),
-  CurrencyData(name: "SAR", flag: "https://flagcdn.com/16x12/sr.png"),
-];
-
 class HomeScreen extends StatefulWidget {
-  HomeScreen({super.key});
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  _HomeScreenState createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  TextEditingController amountController = TextEditingController(text: "1");
+  final TextEditingController amountController = TextEditingController(text: "1");
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  CurrencyData firstCurrency = listCurrency.first;
+  CurrencyData firstCurrency = listCurrency[0];
   CurrencyData secondCurrency = listCurrency[1];
+
   @override
   Widget build(BuildContext context) {
-    ButtonStyle outLineButtonStyle = OutlinedButton.styleFrom(
-      padding: const EdgeInsets.all(15),
-      textStyle: Theme.of(context)
-          .textTheme
-          .titleMedium
-          ?.merge(const TextStyle(fontSize: 18)),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
-      ),
-    );
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text("Currency Convertor"),
+        title: const Text("Currency Converter"),
       ),
       body: Padding(
         padding: const EdgeInsets.all(10),
@@ -52,12 +36,9 @@ class _HomeScreenState extends State<HomeScreen> {
               // Amount Row
               Row(
                 children: [
-                  Text(
+                  const Text(
                     "Amount",
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleMedium
-                        ?.merge(const TextStyle(fontSize: 20)),
+                    style: TextStyle(fontSize: 20),
                   ),
                   const SizedBox(width: 15),
                   Expanded(
@@ -65,13 +46,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       key: formKey,
                       child: TextFormField(
                         autovalidateMode: AutovalidateMode.onUserInteraction,
-                        onSaved: (val) {
-                          amountController.text = val!;
-                        },
+                        onSaved: (val) => amountController.text = val!,
                         controller: amountController,
-                        style: Theme.of(context).textTheme.titleLarge?.merge(
-                              const TextStyle(fontSize: 18),
-                            ),
                         keyboardType: TextInputType.number,
                         decoration: InputDecoration(
                           hintText: "Enter Amount",
@@ -90,90 +66,26 @@ class _HomeScreenState extends State<HomeScreen> {
               Row(
                 children: [
                   Expanded(
-                      child: DropdownButton<CurrencyData>(
-                    isExpanded: true,
-                    value: firstCurrency,
-                    icon: const Icon(Icons.arrow_drop_down_circle_outlined),
-                    elevation: 16,
-                    style: const TextStyle(color: Colors.deepPurple),
-                    underline: Container(
-                      height: 2,
-                      color: Colors.deepPurpleAccent,
-                    ),
-                    onChanged: (CurrencyData? value) {
-                      // This is called when the user selects an item.
+                    child: _buildCurrencyDropdown(firstCurrency, (value) {
                       setState(() {
                         firstCurrency = value!;
                       });
-                    },
-                    items: listCurrency.map<DropdownMenuItem<CurrencyData>>((CurrencyData value) {
-                      return DropdownMenuItem<CurrencyData>(
-                        value: value,
-                        child: Row(
-                          children: [
-                            CachedNetworkImage(
-                              imageUrl: value.flag,
-                              placeholder: (context, url) =>
-                                  CircularProgressIndicator(),
-                              errorWidget: (context, url, error) =>
-                                  Icon(Icons.error),
-                            ),
-                           const SizedBox(width: 5,),
-                            Text(value.name)
-                          ],
-                        ),
-                      );
-                    }).toList(),
-                  )),
+                    }),
+                  ),
                   const SizedBox(width: 10),
-                  Column(
-                    children: [
-                      Icon(
-                        Icons.compare_arrows,
-                        size: 35,
-                        color: Theme.of(context).primaryColor.withOpacity(0.9),
-                      ),
-                    ],
+                  Icon(
+                    Icons.compare_arrows,
+                    size: 35,
+                    color: Theme.of(context).primaryColor.withOpacity(0.9),
                   ),
                   const SizedBox(width: 10),
                   Expanded(
-                      child: DropdownButton<CurrencyData>(
-                    isExpanded: true,
-                    value: secondCurrency,
-                    icon: const Icon(Icons.arrow_drop_down_circle_outlined),
-                    elevation: 16,
-                    style: const TextStyle(color: Colors.deepPurple),
-                    underline: Container(
-                      height: 2,
-                      color: Colors.deepPurpleAccent,
-                    ),
-                    onChanged: (CurrencyData? value) {
-                      // This is called when the user selects an item.
+                    child: _buildCurrencyDropdown(secondCurrency, (value) {
                       setState(() {
                         secondCurrency = value!;
                       });
-                    },
-                    items: listCurrency.map<DropdownMenuItem<CurrencyData>>((CurrencyData value) {
-                      return DropdownMenuItem<CurrencyData>(
-                        value: value,
-                        child: Row(
-                          children: [
-                            CachedNetworkImage(
-                              imageUrl: value.flag,
-                              placeholder: (context, url) =>
-                                  CircularProgressIndicator(),
-                              errorWidget: (context, url, error) =>
-                                  Icon(Icons.error),
-                            ),
-                            const SizedBox(
-                              width: 5,
-                            ),
-                            Text(value.name)
-                          ],
-                        ),
-                      );
-                    }).toList(),
-                  ))
+                    }),
+                  ),
                 ],
               ),
               // Future Builder
@@ -181,9 +93,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 bloc: sl<CurrencyBloc>(),
                 builder: (context, state) {
                   if (state.getAmountState == RequestState.error) {
-                    return Center(
-                      child: Icon(Icons.error),
-                    );
+                    return const Center(child: Icon(Icons.error));
                   } else if (state.getAmountState == RequestState.loaded) {
                     return Container(
                       height: 100,
@@ -195,7 +105,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: Center(
                         child: Text(
                           "${state.amountResponse!.difference}",
-                          style: TextStyle(fontSize: 50, color: Colors.white),
+                          style: const TextStyle(fontSize: 50, color: Colors.white),
                         ),
                       ),
                     );
@@ -206,47 +116,86 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               const SizedBox(height: 20),
               // Convert Button
-              Row(
-                children: [
-                  Expanded(
-                    child: OutlinedButton(
-                      style: outLineButtonStyle,
-                      onPressed: () async {
-                        sl<CurrencyBloc>().add(GetAmountEvent(
-                            from: firstCurrency.name,
-                            to: secondCurrency.name,
-                            amount: amountController.text));
-                      },
-                      child: const Text("Convert"),
-                    ),
-                  ),
-                ],
-              ),
+              _buildButton("Convert", () async {
+                sl<CurrencyBloc>().add(GetAmountEvent(
+                  from: firstCurrency.name,
+                  to: secondCurrency.name,
+                  amount: amountController.text,
+                ));
+              }),
               const SizedBox(height: 15),
-              Row(
-                children: [
-                  Expanded(
-                    child: OutlinedButton(
-                      style: outLineButtonStyle,
-                      onPressed: () async {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (_) => HistoryPage()));
-                      },
-                      child: const Text("Show History"),
-                    ),
-                  ),
-                ],
-              ),
+              _buildButton("Show History", () async {
+                Navigator.push(context, MaterialPageRoute(builder: (_) => const HistoryPage()));
+              }),
             ],
           ),
         ),
       ),
     );
   }
+
+  Widget _buildCurrencyDropdown(CurrencyData currency, void Function(CurrencyData?) onChanged) {
+    return DropdownButton<CurrencyData>(
+      isExpanded: true,
+      value: currency,
+      icon: const Icon(Icons.arrow_drop_down_circle_outlined),
+      elevation: 16,
+      style: const TextStyle(color: Colors.deepPurple),
+      underline: Container(
+        height: 2,
+        color: Colors.deepPurpleAccent,
+      ),
+      onChanged: onChanged,
+      items: listCurrency.map<DropdownMenuItem<CurrencyData>>((value) {
+        return DropdownMenuItem<CurrencyData>(
+          value: value,
+          child: Row(
+            children: [
+              CachedNetworkImage(
+                imageUrl: value.flag,
+                placeholder: (context, url) => const CircularProgressIndicator(),
+                errorWidget: (context, url, error) => const Icon(Icons.error),
+              ),
+              const SizedBox(width: 5),
+              Text(value.name),
+            ],
+          ),
+        );
+      }).toList(),
+    );
+  }
+
+  Widget _buildButton(String text, void Function() onPressed) {
+    return Row(
+      children: [
+        Expanded(
+          child: OutlinedButton(
+            style: OutlinedButton.styleFrom(
+              padding: const EdgeInsets.all(15),
+              textStyle: const TextStyle(fontSize: 18),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+            onPressed: onPressed,
+            child: Text(text),
+          ),
+        ),
+      ],
+    );
+  }
 }
 
 class CurrencyData {
-  String name;
-  String flag;
+  final String name;
+  final String flag;
+
   CurrencyData({required this.name, required this.flag});
 }
+
+final List<CurrencyData> listCurrency = <CurrencyData>[
+  CurrencyData(name: "USD", flag: "https://flagcdn.com/16x12/us.png"),
+  CurrencyData(name: "AED", flag: "https://flagcdn.com/16x12/ua.png"),
+  CurrencyData(name: "EGP", flag: "https://flagcdn.com/16x12/eg.png"),
+  CurrencyData(name: "SAR", flag: "https://flagcdn.com/16x12/sr.png"),
+];
