@@ -74,8 +74,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   const SizedBox(width: 10),
                   Icon(
-                    Icons.compare_arrows,
-                    size: 35,
+                    Icons.arrow_forward,
+                    size: 30,
                     color: Theme.of(context).primaryColor.withOpacity(0.9),
                   ),
                   const SizedBox(width: 10),
@@ -195,7 +195,8 @@ class CurrencyData {
 
 final List<CurrencyData> listCurrency = <CurrencyData>[
   CurrencyData(name: "USD", flag: "https://flagcdn.com/16x12/us.png"),
-  CurrencyData(name: "AED", flag: "https://flagcdn.com/16x12/ua.png"),
+  CurrencyData(name: "KWD", flag: "https://flagcdn.com/16x12/kw.png"),
+  CurrencyData(name: "AED", flag: "https://flagcdn.com/16x12/ae.png"),
   CurrencyData(name: "EGP", flag: "https://flagcdn.com/16x12/eg.png"),
-  CurrencyData(name: "SAR", flag: "https://flagcdn.com/16x12/sr.png"),
+  CurrencyData(name: "SAR", flag: "https://flagcdn.com/16x12/sa.png"),
 ];
