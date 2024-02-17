@@ -5,22 +5,23 @@ import 'package:currency/modules/currency/domain/repository/base_converter_repos
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 
-class ConvertUseCase extends BaseUseCase<Currency,ConvertParameters>{
+class ConvertUseCase extends BaseUseCase<Currency, ConvertParameters> {
   final BaseConverterRepository baseConverterRepository;
   ConvertUseCase(this.baseConverterRepository);
   @override
   Future<Either<Failure, Currency>> call(ConvertParameters parameters) async {
     return await baseConverterRepository.getAmount(parameters);
   }
-
 }
+
 class ConvertParameters extends Equatable {
   final String from;
   final String to;
-  final double amount;
+  final String amount;
 
-  const ConvertParameters({required this.from,required this.to,required this.amount});
+  const ConvertParameters(
+      {required this.from, required this.to, required this.amount});
 
   @override
-  List<Object?> get props => [from,to,amount];
+  List<Object?> get props => [from, to, amount];
 }

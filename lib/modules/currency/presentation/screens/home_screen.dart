@@ -1,41 +1,47 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:currency/core/services/services_locator.dart';
+import 'package:currency/core/utilis/enums.dart';
 import 'package:currency/modules/currency/presentation/controller/currency_bloc.dart';
 import 'package:currency/modules/currency/presentation/screens/history_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+List<CurrencyData> listCurrency = <CurrencyData>[
+  CurrencyData(name: "USD", flag: "https://flagcdn.com/16x12/us.png"),
+  CurrencyData(name: "AED", flag: "https://flagcdn.com/16x12/ua.png"),
+  CurrencyData(name: "EGP", flag: "https://flagcdn.com/16x12/eg.png"),
+  CurrencyData(name: "SAR", flag: "https://flagcdn.com/16x12/sr.png"),
+];
 
 class HomeScreen extends StatefulWidget {
-   HomeScreen({super.key});
+  HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  TextEditingController amountController = TextEditingController();
+  TextEditingController amountController = TextEditingController(text: "1");
 
-   GlobalKey<FormState> formKey = GlobalKey<FormState>();
-@override
-  void initState() {
-    super.initState();
-  }
-   @override
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  CurrencyData firstCurrency = listCurrency.first;
+  CurrencyData secondCurrency = listCurrency[1];
+  @override
   Widget build(BuildContext context) {
-     ButtonStyle outLineButtonStyle = OutlinedButton.styleFrom(
-       padding: const EdgeInsets.all(15),
-       textStyle: Theme.of(context)
-           .textTheme
-           .titleMedium
-           ?.merge(const TextStyle(fontSize: 18)),
-       shape: RoundedRectangleBorder(
-         borderRadius: BorderRadius.circular(10),
-       ),
-     );
+    ButtonStyle outLineButtonStyle = OutlinedButton.styleFrom(
+      padding: const EdgeInsets.all(15),
+      textStyle: Theme.of(context)
+          .textTheme
+          .titleMedium
+          ?.merge(const TextStyle(fontSize: 18)),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+    );
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
         title: const Text("Currency Convertor"),
-        actions: [
-        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(10),
@@ -59,27 +65,13 @@ class _HomeScreenState extends State<HomeScreen> {
                       key: formKey,
                       child: TextFormField(
                         autovalidateMode: AutovalidateMode.onUserInteraction,
-                        onTap: () {
-                          // controller.isConvert.value = false;
-                          // controller.isPressed.value = false;
-                        },
-                        onChanged: (val) {
-                        //  controller.isPressed.value = false;
-                        },
-                        // validator: (val) {
-                        //   return (val!.isEmpty)
-                        //       ? "Please Enter Amount"
-                        //       : (val.isNum == false)
-                        //       ? "Enter Numeric Value"
-                        //       : null;
-                        // },
                         onSaved: (val) {
                           amountController.text = val!;
                         },
                         controller: amountController,
                         style: Theme.of(context).textTheme.titleLarge?.merge(
-                          const TextStyle(fontSize: 18),
-                        ),
+                              const TextStyle(fontSize: 18),
+                            ),
                         keyboardType: TextInputType.number,
                         decoration: InputDecoration(
                           hintText: "Enter Amount",
@@ -97,20 +89,45 @@ class _HomeScreenState extends State<HomeScreen> {
               // Select Currency
               Row(
                 children: [
-                  // currencySelectButton(
-                  //   controller: controller,
-                  //   isFrom: true,
-                  //   context: context,
-                  // ),
+                  Expanded(
+                      child: DropdownButton<CurrencyData>(
+                    isExpanded: true,
+                    value: firstCurrency,
+                    icon: const Icon(Icons.arrow_drop_down_circle_outlined),
+                    elevation: 16,
+                    style: const TextStyle(color: Colors.deepPurple),
+                    underline: Container(
+                      height: 2,
+                      color: Colors.deepPurpleAccent,
+                    ),
+                    onChanged: (CurrencyData? value) {
+                      // This is called when the user selects an item.
+                      setState(() {
+                        firstCurrency = value!;
+                      });
+                    },
+                    items: listCurrency.map<DropdownMenuItem<CurrencyData>>((CurrencyData value) {
+                      return DropdownMenuItem<CurrencyData>(
+                        value: value,
+                        child: Row(
+                          children: [
+                            CachedNetworkImage(
+                              imageUrl: value.flag,
+                              placeholder: (context, url) =>
+                                  CircularProgressIndicator(),
+                              errorWidget: (context, url, error) =>
+                                  Icon(Icons.error),
+                            ),
+                           const SizedBox(width: 5,),
+                            Text(value.name)
+                          ],
+                        ),
+                      );
+                    }).toList(),
+                  )),
                   const SizedBox(width: 10),
                   Column(
                     children: [
-                      Text(
-                        "",
-                        style: Theme.of(context).textTheme.titleMedium?.merge(
-                          const TextStyle(fontSize: 20),
-                        ),
-                      ),
                       Icon(
                         Icons.compare_arrows,
                         size: 35,
@@ -119,19 +136,74 @@ class _HomeScreenState extends State<HomeScreen> {
                     ],
                   ),
                   const SizedBox(width: 10),
-                  // currencySelectButton(
-                  //   controller: controller,
-                  //   isFrom: false,
-                  //   context: context,
-                  // ),
+                  Expanded(
+                      child: DropdownButton<CurrencyData>(
+                    isExpanded: true,
+                    value: secondCurrency,
+                    icon: const Icon(Icons.arrow_drop_down_circle_outlined),
+                    elevation: 16,
+                    style: const TextStyle(color: Colors.deepPurple),
+                    underline: Container(
+                      height: 2,
+                      color: Colors.deepPurpleAccent,
+                    ),
+                    onChanged: (CurrencyData? value) {
+                      // This is called when the user selects an item.
+                      setState(() {
+                        secondCurrency = value!;
+                      });
+                    },
+                    items: listCurrency.map<DropdownMenuItem<CurrencyData>>((CurrencyData value) {
+                      return DropdownMenuItem<CurrencyData>(
+                        value: value,
+                        child: Row(
+                          children: [
+                            CachedNetworkImage(
+                              imageUrl: value.flag,
+                              placeholder: (context, url) =>
+                                  CircularProgressIndicator(),
+                              errorWidget: (context, url, error) =>
+                                  Icon(Icons.error),
+                            ),
+                            const SizedBox(
+                              width: 5,
+                            ),
+                            Text(value.name)
+                          ],
+                        ),
+                      );
+                    }).toList(),
+                  ))
                 ],
               ),
               // Future Builder
-              // Obx(
-              //       () => (controller.isPressed.value)
-              //       ? futureBuilder(context, controller)
-              //       : Container(),
-              // ),
+              BlocBuilder<CurrencyBloc, CurrencyState>(
+                bloc: sl<CurrencyBloc>(),
+                builder: (context, state) {
+                  if (state.getAmountState == RequestState.error) {
+                    return Center(
+                      child: Icon(Icons.error),
+                    );
+                  } else if (state.getAmountState == RequestState.loaded) {
+                    return Container(
+                      height: 100,
+                      width: 400,
+                      decoration: BoxDecoration(
+                        color: Colors.blue,
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      child: Center(
+                        child: Text(
+                          "${state.amountResponse!.difference}",
+                          style: TextStyle(fontSize: 50, color: Colors.white),
+                        ),
+                      ),
+                    );
+                  } else {
+                    return Container();
+                  }
+                },
+              ),
               const SizedBox(height: 20),
               // Convert Button
               Row(
@@ -140,13 +212,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: OutlinedButton(
                       style: outLineButtonStyle,
                       onPressed: () async {
-                        sl<CurrencyBloc>().add(GetAmountEvent(from: 'AED', to: 'USD', amount: '1'));
-
-                        if (formKey.currentState!.validate()) {
-                          formKey.currentState!.save();
-                          //controller.isConvert.value = true;
-                        //  controller.convertButtonOnTap();
-                        }
+                        sl<CurrencyBloc>().add(GetAmountEvent(
+                            from: firstCurrency.name,
+                            to: secondCurrency.name,
+                            amount: amountController.text));
                       },
                       child: const Text("Convert"),
                     ),
@@ -160,8 +229,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: OutlinedButton(
                       style: outLineButtonStyle,
                       onPressed: () async {
-                      //  controller.isConvert.value = false;
-                        Navigator.push(context, MaterialPageRoute(builder: (_)=>HistoryPage()));
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (_) => HistoryPage()));
                       },
                       child: const Text("Show History"),
                     ),
@@ -174,4 +243,10 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
+}
+
+class CurrencyData {
+  String name;
+  String flag;
+  CurrencyData({required this.name, required this.flag});
 }

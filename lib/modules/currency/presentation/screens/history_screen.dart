@@ -9,16 +9,23 @@ class HistoryPage extends StatelessWidget {
   Widget build(BuildContext context) {
     TextStyle? textStyle2 = Theme.of(context).textTheme.titleMedium;
     TextStyle? textStyle = Theme.of(context).textTheme.titleLarge?.merge(
-      TextStyle(
-        color: Theme.of(context).primaryColor,
-        fontWeight: FontWeight.bold,
-      ),
-    );
+          TextStyle(
+            color: Theme.of(context).primaryColor,
+            fontWeight: FontWeight.bold,
+          ),
+        );
 
     return Scaffold(
       appBar: AppBar(
         title: const Text("History"),
         centerTitle: true,
+        actions: [
+          IconButton(
+              onPressed: () {
+                DBHelper.dbHelper.clearRecords();
+              },
+              icon: Icon(Icons.clear_all))
+        ],
       ),
       body: FutureBuilder(
         future: DBHelper.dbHelper.fetchAllRecords(),
@@ -32,7 +39,7 @@ class HistoryPage extends StatelessWidget {
                 return Container(
                   padding: const EdgeInsets.symmetric(vertical: 15),
                   margin:
-                  const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                      const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                   width: double.infinity,
                   decoration: BoxDecoration(
                     color: Theme.of(context).primaryColor.withOpacity(0.1),
@@ -56,7 +63,7 @@ class HistoryPage extends StatelessWidget {
                             Icons.compare_arrows,
                             size: 35,
                             color:
-                            Theme.of(context).primaryColor.withOpacity(0.9),
+                                Theme.of(context).primaryColor.withOpacity(0.9),
                           ),
                           Expanded(
                             child: Column(

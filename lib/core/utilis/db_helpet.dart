@@ -30,10 +30,10 @@ class DBHelper {
 
   insertRecord(
       {required String from,
-        required String to,
-        required String date,
-        required String amount,
-        required String difference}) async {
+      required String to,
+      required String date,
+      required String amount,
+      required String difference}) async {
     await initDB();
     String query =
         "INSERT INTO $tableName($colFrom, $colTO, $colAmount, $colDifference, $colDate) VALUES(?, ?, ?, ?, ?)";
@@ -50,8 +50,18 @@ class DBHelper {
     List<Map<String, dynamic>> data = await db!.rawQuery(query);
 
     List<CurrencyDB> historyList =
-    data.map((e) => CurrencyDB.fromJSON(data: e)).toList();
+        data.map((e) => CurrencyDB.fromJSON(data: e)).toList();
 
     return historyList;
+  }
+
+  Future<void> clearRecords() async {
+    await initDB();
+
+    // Execute a SQL query to delete all records from the table
+    await db!.delete(tableName);
+
+    // Optionally, you can print a message or perform any other action after clearing the records
+    print('All records cleared successfully');
   }
 }

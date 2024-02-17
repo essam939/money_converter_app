@@ -9,14 +9,15 @@ final sl = GetIt.instance;
 
 class ServicesLocator {
   void init() {
-     // bloc
-     sl.registerFactory(() => CurrencyBloc(sl()));
-     // use cases
-     sl.registerLazySingleton(() => ConvertUseCase(sl()));
-     // Repository
-     sl.registerLazySingleton<BaseConverterRepository>(() => ConverterRepository(sl()));
-     // data source
-     sl.registerLazySingleton<BaseConverterRemoteDataSource>(
-         () => ConverterRemoteDataSource());
+    // bloc
+    sl.registerLazySingleton(() => CurrencyBloc(sl()));
+    // use cases
+    sl.registerLazySingleton(() => ConvertUseCase(sl()));
+    // Repository
+    sl.registerLazySingleton<BaseConverterRepository>(
+        () => ConverterRepository(sl()));
+    // data source
+    sl.registerLazySingleton<BaseConverterRemoteDataSource>(
+        () => ConverterRemoteDataSource());
   }
 }
