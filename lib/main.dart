@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'core/services/services_locator.dart';
-import 'modules/currency/presentation/screens/home_screen.dart';
+import 'modules/currency/presentation/screens/mian_navigation_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home:const HomeScreen(),
+        home:const MainNavigationScreen(),
       ),
     );
   }

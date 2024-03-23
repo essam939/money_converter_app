@@ -9,3 +9,5 @@ class GetAmountEvent extends CurrencyEvent {
   final String amount;
   GetAmountEvent({required this.from, required this.to, required this.amount});
 }
+
+class GetGoldPriceEvent extends CurrencyEvent {}

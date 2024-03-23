@@ -23,10 +23,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: const Text("Currency Converter"),
-      ),
       body: Padding(
         padding: const EdgeInsets.all(10),
         child: SingleChildScrollView(
@@ -195,8 +191,8 @@ class CurrencyData {
 
 final List<CurrencyData> listCurrency = <CurrencyData>[
   CurrencyData(name: "USD", flag: "https://flagcdn.com/16x12/us.png"),
+  CurrencyData(name: "EGP", flag: "https://flagcdn.com/16x12/eg.png"),
   CurrencyData(name: "KWD", flag: "https://flagcdn.com/16x12/kw.png"),
   CurrencyData(name: "AED", flag: "https://flagcdn.com/16x12/ae.png"),
-  CurrencyData(name: "EGP", flag: "https://flagcdn.com/16x12/eg.png"),
   CurrencyData(name: "SAR", flag: "https://flagcdn.com/16x12/sa.png"),
 ];
